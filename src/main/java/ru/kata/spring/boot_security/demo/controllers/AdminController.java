@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import ru.kata.spring.boot_security.demo.Exception.ExceptionInfo;
+import ru.kata.spring.boot_security.demo.Exception.UserUsernameExistsException;
 import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.services.PersonDetailsService;
@@ -58,19 +60,53 @@ public class AdminController {
     public ResponseEntity<List<User>> getUsers() {
         return new ResponseEntity<>(userService.findAllUsers(), HttpStatus.OK);
     }
-
-//    @PostMapping("/users")
-//    public ResponseEntity <User> createUser(@RequestBody User user) {
-//          Set<Role> roles = new HashSet<>(roleService.getRolesById(Collections.singletonList(2)));
-//       user.setRoles(roles);
-//       user.setPassword(passwordEncoder.encode(user.getPassword()));
-//            userService.saveUser(user);
-//            return new ResponseEntity<>(HttpStatus.OK);
-//        //This fucking work!
-//
-//    }
+    //This works
     @PostMapping("/users")
-   
+    public ResponseEntity<ExceptionInfo> createUser(@RequestBody User user) {
+
+        try {
+//            Set<Role> roles = new HashSet<>(roleService.getRolesById(Collections.singletonList(2)));//correct here
+//             user.setRoles(roles);
+             user.setPassword(passwordEncoder.encode(user.getPassword()));
+             userService.saveUser(user);
+             return new ResponseEntity<>(HttpStatus.OK);
+        }catch (UserUsernameExistsException u) {
+            throw new UserUsernameExistsException("User with username exists");
+        }
+    }
+    //This works
+    @DeleteMapping("/users/{id}")
+    public ResponseEntity<ExceptionInfo> pageDelete(@PathVariable("id") long id) {
+        userService.removeUser(id);
+        return new ResponseEntity<>(new ExceptionInfo("User deleted"), HttpStatus.OK);
+    }
+
+    //this doesn't work
+
+    @PutMapping("/users/{id}")
+    public ResponseEntity<ExceptionInfo> pageEdit(@PathVariable("id") long id,
+                                                   @RequestBody User user) {
+
+        try {
+            String oldPassword = userService.getUserById(id).getPassword();
+            if (oldPassword.equals(user.getPassword())) {
+                System.out.println("TRUE");
+//                Set<Role> roles = new HashSet<>(roleService.getRolesById(Collections.singletonList(2)));
+//                user.setRoles(roles);
+                user.setPassword(oldPassword);
+                userService.updateUser(user);
+            } else {
+                System.out.println("FALSE");
+//                Set<Role> roles = new HashSet<>(roleService.getRolesById(Collections.singletonList(2)));//correct here!!
+//                user.setRoles(roles);
+                user.setPassword(passwordEncoder.encode(user.getPassword()));
+                userService.saveUser(user);
+            }
+            return new ResponseEntity<>(HttpStatus.OK);
+        }catch (UserUsernameExistsException u) {
+            throw new UserUsernameExistsException("User with username exist");
+        }
+    }
 
 
 
@@ -101,30 +137,30 @@ public class AdminController {
 //        return "redirect:/admin";
 //    }
 
-    @DeleteMapping("/{id}/delete")
-    public String pageDelete(@PathVariable("id") long id) {
-        userService.removeUser(id);
-        return "redirect:/admin";
-    }
+//    @DeleteMapping("/{id}/delete")
+//    public String pageDelete(@PathVariable("id") long id) {
+//        userService.removeUser(id);
+//        return "redirect:/admin";
+//    }
 
-    @GetMapping("/{id}/update")
-    public String pageEditUser(@PathVariable("id") long id, Model model) {
-        model.addAttribute("user",userService.getUserById(id));
-        model.addAttribute("listRoles", roleService.getAllRoles());
-        return "users";
-    }
-
-    @PutMapping("/{id}/update")
-    public String pageEdit(@Valid User user, BindingResult bindingResult,
-                           @RequestParam("listRoles") List<Integer>roleIds) {
-        if (bindingResult.hasErrors()) {
-            return "redirect:/admin";
-        }
-        Set<Role> roles = new HashSet<>(roleService.getRolesById(roleIds));
-        user.setRoles(roles);
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userService.updateUser(user);
-        return "redirect:/admin";
-    }
+//    @GetMapping("/{id}/update")
+//    public String pageEditUser(@PathVariable("id") long id, Model model) {
+//        model.addAttribute("user",userService.getUserById(id));
+//        model.addAttribute("listRoles", roleService.getAllRoles());
+//        return "users";
+//    }
+//
+//    @PutMapping("/{id}/update")
+//    public String pageEdit(@Valid User user, BindingResult bindingResult,
+//                           @RequestParam("listRoles") List<Integer>roleIds) {
+//        if (bindingResult.hasErrors()) {
+//            return "redirect:/admin";
+//        }
+//        Set<Role> roles = new HashSet<>(roleService.getRolesById(roleIds));
+//        user.setRoles(roles);
+//        user.setPassword(passwordEncoder.encode(user.getPassword()));
+//        userService.updateUser(user);
+//        return "redirect:/admin";
+//    }
 }
 
