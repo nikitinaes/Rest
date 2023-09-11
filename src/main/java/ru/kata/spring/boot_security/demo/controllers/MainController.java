@@ -22,7 +22,13 @@ public class MainController {
 
     @GetMapping("/user")
     public String pageForUser (Model model, Principal principal) {
-       model.addAttribute("user",personDetailsService.findByUsername(principal.getName()));
-    return "user";
+        model.addAttribute("user", personDetailsService.findByUsername(principal.getName()));
+        return "user";
+    }
+    @GetMapping("/")
+    public String mainPage() {
+    return "index";
+    }
+
 }
-}
+

@@ -49,7 +49,7 @@ public class AdminController {
         this.personDetailsService = personDetailsService;
     }
 
-//    @GetMapping("/admin")
+//        @GetMapping("/admin")
 //    public String showAllUsers (Principal principal, Model model) {
 //        model.addAttribute("users", userService.findAllUsers());
 //        model.addAttribute("user", personDetailsService.findByUsername(principal.getName()));
@@ -60,20 +60,22 @@ public class AdminController {
     public ResponseEntity<List<User>> getUsers() {
         return new ResponseEntity<>(userService.findAllUsers(), HttpStatus.OK);
     }
+
     //This works
-    @PostMapping("/users")
+    @PostMapping("/admin/add")
     public ResponseEntity<ExceptionInfo> createUser(@RequestBody User user) {
 
         try {
 //            Set<Role> roles = new HashSet<>(roleService.getRolesById(Collections.singletonList(2)));//correct here
 //             user.setRoles(roles);
-             user.setPassword(passwordEncoder.encode(user.getPassword()));
-             userService.saveUser(user);
-             return new ResponseEntity<>(HttpStatus.OK);
-        }catch (UserUsernameExistsException u) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            userService.saveUser(user);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (UserUsernameExistsException u) {
             throw new UserUsernameExistsException("User with username exists");
         }
     }
+
     //This works
     @DeleteMapping("/users/{id}")
     public ResponseEntity<ExceptionInfo> pageDelete(@PathVariable("id") long id) {
@@ -85,7 +87,7 @@ public class AdminController {
 
     @PutMapping("/users/{id}")
     public ResponseEntity<ExceptionInfo> pageEdit(@PathVariable("id") long id,
-                                                   @RequestBody User user) {
+                                                  @RequestBody User user) {
 
         try {
             String oldPassword = userService.getUserById(id).getPassword();
@@ -103,10 +105,11 @@ public class AdminController {
                 userService.saveUser(user);
             }
             return new ResponseEntity<>(HttpStatus.OK);
-        }catch (UserUsernameExistsException u) {
-            throw new UserUsernameExistsException("User with username exist");
+        } catch (UserUsernameExistsException u) {
+            throw new UserUsernameExistsException("User with username exists");
         }
     }
+}
 
 
 
@@ -117,7 +120,7 @@ public class AdminController {
 //    model.addAttribute("listRoles", roleService.findByIdRoles());
 //    return "create";
 //}
-
+//
 //    @PostMapping("/new")
 //    public String pageCreate(@ModelAttribute("user")
 //                             @Valid User user, BindingResult bindingResult,
@@ -136,13 +139,13 @@ public class AdminController {
 //        userService.saveUser(user);
 //        return "redirect:/admin";
 //    }
-
+//
 //    @DeleteMapping("/{id}/delete")
 //    public String pageDelete(@PathVariable("id") long id) {
 //        userService.removeUser(id);
 //        return "redirect:/admin";
 //    }
-
+//
 //    @GetMapping("/{id}/update")
 //    public String pageEditUser(@PathVariable("id") long id, Model model) {
 //        model.addAttribute("user",userService.getUserById(id));
@@ -162,5 +165,5 @@ public class AdminController {
 //        userService.updateUser(user);
 //        return "redirect:/admin";
 //    }
-}
+
 
