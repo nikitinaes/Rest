@@ -62,7 +62,7 @@ public class AdminController {
     }
 
     //This works
-    @PostMapping("/admin/add")
+    @PostMapping("/users")
     public ResponseEntity<ExceptionInfo> createUser(@RequestBody User user) {
 
         try {
@@ -77,7 +77,7 @@ public class AdminController {
     }
 
     //This works
-    @DeleteMapping("/users/{id}")
+    @DeleteMapping("/users/delete/{id}")
     public ResponseEntity<ExceptionInfo> pageDelete(@PathVariable("id") long id) {
         userService.removeUser(id);
         return new ResponseEntity<>(new ExceptionInfo("User deleted"), HttpStatus.OK);

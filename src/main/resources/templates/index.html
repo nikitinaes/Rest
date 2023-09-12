@@ -9,9 +9,7 @@
     <script type="text/javascript" th:src="@{js/main.js}"  src="../static/js/main.js"></script>
     <script type="text/javascript" th:src="@{js/createUser.js}"  src="../static/js/createUser.js"></script>
     <script type="text/javascript" th:src="@{js/deleteUser.js}"  src="../static/js/deleteUser.js"></script>
-    <script type="text/javascript" th:src="@{js/getOperations.js}"  src="../static/js/getOperations.js"></script>
     <script type="text/javascript" th:src="@{js/editUser.js}"  src="../static/js/editUser.js"></script>
-    <script type="text/javascript" th:src="@{js/admin.js}"  src="../static/js/admin.js"></script>//
     <title>Users</title>
     <meta name="theme-color" content="#7952b3">
     <style>
@@ -137,7 +135,6 @@
                         </nav>
 
                         <form id="addForm">
-
                             <div class="form-group">
                                 <label for="usernameCreate" class="col-form-label">Username</label>
                                 <input type="text" class="form-control username" id="usernameCreate">
@@ -147,6 +144,7 @@
                                 <label for="passwordCreate" class="com-form-label">Password</label>
                                 <input type="password" class="form-control" id="passwordCreate">
                             </div>
+                            </form>
 
 
                             <div class="form-group">
@@ -170,6 +168,7 @@
             </div>
         </div>
 
+
         <div class="modal fade" id="defaultModal" tabindex="-1" role="dialog" aria-labelledby="someDefaultModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -192,5 +191,6 @@
         </div>
     </div>
 </main>
+
 </body>
 </html>
