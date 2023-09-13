@@ -1,4 +1,4 @@
-const url = 'http://localhost:8030/users';
+const url = 'http://localhost:8020/users';
 const addUserForm = document.querySelector('.addForm');
 $(document).ready(); {
     fillTable();
