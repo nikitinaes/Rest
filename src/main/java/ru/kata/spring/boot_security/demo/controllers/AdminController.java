@@ -62,7 +62,7 @@ public class AdminController {
     }
 
     //This works
-    @PostMapping("/users")
+    @PostMapping("users/add")
     public ResponseEntity<ExceptionInfo> createUser(@RequestBody User user) {
 
         try {
