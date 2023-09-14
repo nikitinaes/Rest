@@ -66,7 +66,7 @@ public class AdminController {
     public ResponseEntity<ExceptionInfo> createUser(@RequestBody User user) {
 
         try {
-//            Set<Role> roles = new HashSet<>(roleService.getRolesById(Collections.singletonList(2)));//correct here
+//            Set<Role> roles = new HashSet<>(roleService.getRolesById(ids));//correct here
 //             user.setRoles(roles);
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             userService.saveUser(user);

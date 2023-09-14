@@ -1,44 +1,44 @@
-const urlPost = "/users/add"
+const urlPost = '/users/add'
 $(document).ready();
 {
-console.log('starting')
-$('#addForm').css('border','1px solid red');
-    const newUserForm = document.getElementById("addForm")
+    console.log('starting')
+    $('#addForm').css('border', '1px solid red');
+    const newUserForm = document.querySelector('button')
     console.log(newUserForm);
     newUserForm
-        .addEventListener("submit", (e) => {
+        .addEventListener('click', (e) => {
             e.preventDefault()
             console.log(123)
+            let nameRole = document.getElementById("rolesCreate")
+            let listRoles = []
+            let roleValue = ""
+            for (let i = 0; i < nameRole.options.length; i++) {
+                if (nameRole.options[i].selected) {
+                    listRoles.push({
+                         id: 1,// id: 1 nameRole.options[i].value,
+                        role: "ROLE_" + nameRole.options[i].innerHTML
+                    })
+                    roleValue += nameRole.options[i].innerHTML + ''
+                }
+            } //added
+
+            fetch(urlPost, {
+                method: "POST",
+                headers: {
+                    "Content-type": "application/json"
+                },
+                body: JSON.stringify({
+                    username: document.getElementById("usernameCreate").value,
+                    password: document.getElementById("passwordCreate").value,
+                    email: document.getElementById("emailCreate").value,
+                    roles: listRoles
+                })
+            }).then(() => {
+                // newUserForm.reset()
+            })
+            document.getElementById("adminTable").click()
         })
 }
-//         let nameRole = document.getElementById("rolesCreate")
-//         let listRoles = []
-//         let roleValue = ""
-//         for (let i = 0; i < nameRole.options.length; i++) {
-//             if (nameRole.options[i].selected) {
-//                 listRoles.push({
-//                     id: nameRole.options[i].value,
-//                     role: "ROLE_" + nameRole.options[i].innerHTML
-//                 })
-//                 roleValue += nameRole.options[i].innerHTML + ''
-//             }
-//         }
-//         fetch(urlPost, {
-//             method: "POST",
-//             headers: {
-//                 "Content-type": "application/json"
-//             },
-//             body: JSON.stringify({
-//                 username: document.getElementById("usernameCreate").value,
-//                 password: document.getElementById("passwordCreate").value,
-//                 email: document.getElementById("emailCreate").value,
-//                 roles: listRoles
-//             })
-//         }).then(() => {
-//             newUserForm.reset()
-//         })
-//         document.getElementById("adminTable").click()
-//     })
 //------------
 // var selectedRow = null
 //
