@@ -23,6 +23,10 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(user);
     }
 
+/*
+    public List<User> findById(Long id) {
+        return userRepository.findAllById(id);
+    }*/
     public List<User> findAllUsers() {
         return userRepository.findAll();
     }
@@ -35,6 +39,7 @@ public class UserServiceImpl implements UserService {
         }
         return false;
     }
+
     public User getUserById (long id) {
        return userRepository.getById(id);
     }
